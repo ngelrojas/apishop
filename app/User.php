@@ -12,7 +12,8 @@ class User extends Authenticatable
     const VERIFIED_USER = '1';
     const UNVERIFIED_USER = '0';
     const ADMIN_USER = 'true';
-    const REGULAR_USER 'false';
+    const REGULAR_USER = 'false';
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +47,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = strtolower($name); 
+    }
+
+    public function getNameAttribute($name)
+    {
+        return ucwords($name); 
+    }
+
+    public function setEmailAttribute($email)
+    {
+        $this->attributes['email'] = strtolower($email); 
+    }
 
     public function isVerified()
     {

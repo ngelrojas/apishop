@@ -29,7 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
-        'verification_token' => $verified == User::VERIFIED_USER ? null : User::generateVerificationCode(),
+        'verification_token' => $verified = User::VERIFIED_USER ? null : User::generateVerificationCode(),
         'admin' => $verified = $faker->randomElement([User::ADMIN_USER, User::REGULAR_USER]),
 
     ];
@@ -48,7 +48,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'name' => $faker->word,
         'description' => $faker->paragraph(1),
         'quantity' => $faker->numberBetween(1, 10),
-        'status' => $faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PROUDCT]),
+        'status' => $faker->randomElement([Product::AVAILABLE_PRODUCT, Product::UNAVAILABLE_PRODUCT]),
         'image' => $faker->randomElement(['1.jpeg', '2.jpg', '3.jpg']),
         'seller_id' => User::all()->random()->id
     ];
@@ -56,10 +56,10 @@ $factory->define(Product::class, function (Faker $faker) {
 
 $factory->define(Transaction::class, function (Faker $faker) {
     $seller = Seller::has('products')->get()->random();
-    $buyer = User::all()->except($seller->id)->radom(); 
+    $buyer = User::all()->except($seller->id)->random(); 
     return [
         'quantity' => $faker->numberBetween(1, 3),
-        'buyer_id' => $buyer-id,
+        'buyer_id' => $buyer->id,
         'product_id' => $seller->products->random()->id,
 
     ];
